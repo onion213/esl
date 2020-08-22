@@ -1,0 +1,156 @@
+\documentclass{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{hyperref}
+\usepackage{pxjahyper}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+
+\theoremstyle{definition}
+\newtheorem*{theorem}{定理}
+\newtheorem*{point}{嬉しいポイント}
+\newtheorem*{definition}{定義}
+\newtheorem*{claim}{主張}
+
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}\limits}
+\newcommand{\argmax}{\mathop{\mathrm{argmax}}\limits}
+
+\title{モーメントと代表値}
+
+\author{鬼頭幸助}
+\date{\today}
+\begin{document}
+\maketitle
+
+実数のデータ$x_1,\dots,x_n$の代表値として有名なのは、平均、中央値、最頻値の3種類。
+これらの統一的な理解と、これらを「データを代表する値」として採用することの正当化について。
+
+\begin{claim}
+平均、中央値、最頻値は、それぞれ、2次、1次、0次の中心化モーメントを最小化する値である。
+\end{claim}
+
+\begin{point}
+  \begin{enumerate}
+    \item 平均、中央値、最頻値という、一見全然別物だが、横並びで出てきがちな概念を統一的に理解できる。
+    \item 外れ値に対する強さ(頑健性、robustness)の違いを、「重みの付け方」という観点で理解できる。
+
+    モーメントの$\sum$の中を損失関数だと思うと、次数が高いものほど、外れ値に大きなペナルティを課していることが分かる。逆に、次数が低いものほど、外れ値を軽視もしくは無視するように働く。これが、「頑健さ」を生んでいる。
+  \end{enumerate}
+\end{point}
+
+\begin{definition}
+  実数データ$x_1,\dots,x_n$と$c \in \mathcal{R}$及び$p>0$に対して、点$c$における$p$次中心化モーメントとは、以下で定まる実数$\mu_p(c)$。
+  \[
+    \mu_p(c)=\sum_{i=1}^n|x_i-c|^p
+  \]
+  また、点$c$における$0$次中心化モーメント$\mu_0(c)$を以下によって定める。
+  \[
+    \mu_0(c)=\sum_{i=1}^n1-\delta_{x_i,c}
+  \]
+  ただし、$\delta_{i,j}$はKroneckerのデルタである。これは、$p>0$のときの定義において、$p \to 0$としたときの極限である。
+\end{definition}
+
+\begin{theorem}
+  平均$\frac{1}{n}\sum_{i=1}^nx_i$は、2次中心化モーメントを最小化する。すなわち、
+  \[
+    \argmin_c\mu_2(c)=\frac{1}{n}\sum_{i=1}^nx_i
+  \]
+\end{theorem}
+\begin{proof}
+  2次中心化モーメントを、中心の値の関数とみると、微分可能なので、微分すればよい。
+  \[
+    \mu_2(c)=\sum_{i=1}^n(x_i-c)^2
+  \]
+  となるが、これは$c$に関する2次式で、$c^2$の係数は$n>0$なので、最小値を持つ。これを最小化する点を$\bar{x}$とすると、
+  \[
+    \frac{d}{dc}\mu_2(c)=\sum_{1=1}^n2(x_i-\bar{x})=0
+  \]
+  となるので、$\bar{x}$について解いて、
+  \[
+    \bar{x}=\sum_{i=1}^nx_i
+  \]
+  を得る。
+\end{proof}
+
+\begin{theorem}
+  中央値$\mathrm{median}(\{x_i \mid i=1,\dots,n\})$は、1次中心化モーメントを最小化する。すなわち、
+  \begin{align*}
+    \argmin_c\mu_1(c)&=\mathrm{median}(\{x_i \mid i=1,\dots,n\})\\
+    &=
+    \begin{cases}
+      x_{(\frac{n+1}{2})} & (n\mbox{が奇数のとき})\\
+      \frac{1}{2}(x_{(\frac{n}{2})}+x_{(\frac{n}{2}+1)}) & (n\mbox{が偶数のとき})
+    \end{cases}
+  \end{align*}
+  となる。ただし、$x_{(i)}$は、$x_1,\dots,x_n$を昇順に並べた時の$i$番目の値とする。
+\end{theorem}
+
+\begin{proof}
+  $0 \le x_1 \le x_2 \le \cdots \le x_n$としてよい。
+
+  $x_k \le c \le x_{k+1}$のときを考える。このとき、
+  \begin{align*}
+    \mu_1(c)&=\sum_{i=1}^n|x_i-c|\\
+    &=\sum_{i=1}^k(c-x_i)+\sum_{i=k+1}^n(x_i-c)\\
+    &=(2k-n)c-\sum_{i=1}^kx_i+\sum_{i=k+1}^nx_i
+  \end{align*}
+  となる。よって、
+  \[
+    \argmin_{x_k \le c \le x_{k+1}}=
+    \begin{cases}
+      x_k & (2k-n>0\mbox{のとき})\\
+      x_{k+1} & (2k-n<0\mbox{のとき})\\
+      \mbox{任意の}c & (2k-n=0\mbox{のとき})
+    \end{cases}
+  \]
+  と分かる。よって、$n$が奇数のとき、$2k<n$ならば、
+  \[
+    \mu_1(c) \ge \mu_1(x_{k+1}) \ge \mu_1(x_{k+1}) \ge \cdots \ge \mu_1 (x_{\frac{n+1}{2}})
+  \]
+  となり、$2k>n$ならば、
+  \[
+    \mu_1(c) \ge \mu_1(x_{k}) \ge \mu_1(x_{k-1}) \ge \cdots \ge \mu_1 (x_{\frac{n+1}{2}})
+  \]
+  となる。よって、$n$が奇数のとき、
+  \[
+    \argmin_c\mu_1(c)=x_{\frac{n+1}{2}}=\mathrm{median}(\{x_i \mid i=1,\dots,n\})
+  \]
+  と分かる。また、$n$が偶数のとき、奇数のときと同様にして、
+  \[
+    \begin{cases}
+      \mu_1(c) \ge \mu_1(x_{\frac{n}{2}}) & (2k<n\mbox{のとき})\\
+      \mu_1(c) \ge \mu_1(x_{\frac{n}{2}+1}) & (2k>n\mbox{のとき})\\
+    \end{cases}
+  \]
+  と分かり、$2k=n$のとき、$\mu_1(c)$は定数になるので、
+  \[
+    \argmin_c\mu_1(c)=(x_{\frac{n}{2}} \le c \le x_{\frac{n}{2}+1}\mbox{を満たす任意の値})
+  \]
+  となるが、もちろん中央値$\frac{1}{2}(x_{(\frac{n}{2})}+x_{(\frac{n}{2}+1)})$はこの区間に含まれる。
+
+\end{proof}
+
+\begin{theorem}
+  最頻値$\mathrm{mode}(\{x_i \mid i=1,\dots,n\})$は、0次中心化モーメントを最小化する。すなわち、
+  \begin{align*}
+    \argmin_c\mu_0(c)&=\mathrm{mode}(\{x_i \mid i=1,\dots,n\})\\
+    &=\argmax_c\#\{i \mid x_i=c\}
+  \end{align*}
+  ただし、$\#$は、集合の要素の数を表す。
+\end{theorem}
+
+\begin{proof}
+  \begin{align*}
+    \mu_0(c)&=\sum_{i=1}^n1-\delta_{x_i,c}\\
+    &=\#\{i \mid x_i \ne c\}
+  \end{align*}
+  となるので、
+  \begin{align*}
+    \argmin_c\mu_0(c)&=\argmin_c\#\{i \mid x_i \ne c\}\\
+    &=\argmax_c\#\{i \mid x_i=c\}\\
+    &=\mathrm{mode}(\{x_i \mid i=1,\dots,n\})
+  \end{align*}
+  と分かる。
+\end{proof}
+
+\end{document}

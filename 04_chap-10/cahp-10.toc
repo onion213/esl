@@ -1,0 +1,10 @@
+\beamer@sectionintoc {1}{``AdaBoost.M1''の話\\p.337-}{3}{0}{1}
+\beamer@sectionintoc {2}{BoostingとAdditive Modelの相性がいい話\\p.341-}{8}{0}{2}
+\beamer@sectionintoc {3}{Forward Stagewise(Additive Modelで使える計算方法)の話\\p.342-}{10}{0}{3}
+\beamer@sectionintoc {4}{損失関数の話\\p.343-}{13}{0}{4}
+\beamer@sectionintoc {5}{Data Mining における手法の``実用性''の話\\p.350-}{22}{0}{5}
+\beamer@sectionintoc {6}{木を使ったBoostingの話\\p.353-}{25}{0}{6}
+\beamer@sectionintoc {7}{勾配Boostingの話\\p.358-}{30}{0}{7}
+\beamer@sectionintoc {8}{正則化の話\\p.364-}{35}{0}{8}
+\beamer@sectionintoc {9}{計算結果の解釈の話\\p.367-}{40}{0}{9}
+\beamer@sectionintoc {10}{残りの部分は具体例だったので飛ばします. おわり. }{44}{0}{10}

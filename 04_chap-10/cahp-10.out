@@ -1,0 +1,11 @@
+%このファイルは日本語文字を含みます.
+\BOOKMARK [2][]{Outline0.1}{``AdaBoost.M1''の話 p.337-}{}% 1
+\BOOKMARK [2][]{Outline0.2}{BoostingとAdditive Modelの相性がいい話 p.341-}{}% 2
+\BOOKMARK [2][]{Outline0.3}{Forward Stagewise\(Additive Modelで使える計算方法\)の話 p.342-}{}% 3
+\BOOKMARK [2][]{Outline0.4}{損失関数の話 p.343-}{}% 4
+\BOOKMARK [2][]{Outline0.5}{Data Mining における手法の``実用性''の話 p.350-}{}% 5
+\BOOKMARK [2][]{Outline0.6}{木を使ったBoostingの話 p.353-}{}% 6
+\BOOKMARK [2][]{Outline0.7}{勾配Boostingの話 p.358-}{}% 7
+\BOOKMARK [2][]{Outline0.8}{正則化の話 p.364-}{}% 8
+\BOOKMARK [2][]{Outline0.9}{計算結果の解釈の話 p.367-}{}% 9
+\BOOKMARK [2][]{Outline0.10}{残りの部分は具体例だったので飛ばします. おわり. }{}% 10
