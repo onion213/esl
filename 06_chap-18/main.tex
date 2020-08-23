@@ -1,0 +1,42 @@
+\documentclass[dvipdfmx,8pt]{beamer}
+\usepackage{bxdpx-beamer} % dvipdfmxなので必要
+\usepackage{pxjahyper} % 日本語のしおり用
+% \usepackage{minijs} % フォントの設定?pLaTeX, upLaTaXなら不要
+
+\usepackage{url} % 文中にリンク張る用
+\usepackage{amsmath} %数式用
+\renewcommand{\kanjifamilydefault}{\gtdefault} % 既定をゴシック体に変更
+
+
+% \usetheme{metropolis}
+\AtBeginSection{\frame{\sectionpage}} % Section毎に見出しを追加
+
+\title{The Elements of Statistical Learning\\Chap.18: High-Dimensional Problems: $p \gg N$}
+\date{\today}
+\author{Kosuke Kito}
+
+\begin{document}
+  \maketitle
+  \begin{frame}{流れ}
+    \begin{itemize}
+      \item 流れを書く。
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{今こそ再生核ヒルベルト空間}
+    \begin{itemize}
+      \item まずはやりたいことの整理。\\
+        \begin{itemize}
+          \item 線形に分類できないもの(同心円が典型例)をうまく分類したい。
+          \item 変数変換してあげると、線形の手法を使える。\\
+            \[
+              (x,y) \mapsto (x^2,y^2)
+            \]
+          \item 高次元に写せば、ほぼ確実に線形分類可能にできる。
+            \[
+              (x,y)\mapsto (x,y,x^2,xy,y^2)
+            \]
+          \item 一方、高次元に写すと計算量が増えたり
+        \end{itemize}
+    \end{itemize}
+  \end{frame}
+\end{document}
