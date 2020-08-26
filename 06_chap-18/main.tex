@@ -22,9 +22,11 @@
       \item 流れを書く。
     \end{itemize}
   \end{frame}
-  \begin{frame}{今こそ再生核ヒルベルト空間}
+  \section{再生核ヒルベルト空間\\(Reproducing Kernel Hilbert Space, RKHS)}
+  \begin{frame}{今こそRKHS - カーネル法(Kernel Method)}
     \begin{itemize}
-      \item まずはやりたいことの整理。\\
+      \item RKHSは、カーネル法を実現するときに重要になる数学的な対象です。
+      \item まずはカーネル法について、やりたいこととざっくり全体像の整理。\\
         \begin{itemize}
           \item 線形に分類できないもの(同心円が典型例)をうまく分類したい。
           \item 変数変換してあげると、線形の手法を使える。\\
@@ -35,7 +37,11 @@
             \[
               (x,y)\mapsto (x,y,x^2,xy,y^2)
             \]
-          \item 一方、高次元に写すと計算量が増えたり
+          \item この、変数変換の写像を``カーネル''と呼ぶ。
+          \item 一方、高次元に写すと計算量が増える。困る。\\
+            →高次元でも計算が楽なカーネルはないものか...
+          \item 正定値カーネルは内積計算が楽!内積で計算できるモデルならいい感じに使える!\\
+          (SVM, CPA, etc...)
         \end{itemize}
     \end{itemize}
   \end{frame}
