@@ -134,6 +134,29 @@
         \end{columns}
     \end{itemize}
   \end{frame}
+  \begin{frame}{Nearest Shrunken Centroids}
+    \begin{itemize}
+      \item この標準化された距離を soft-threshold
+        \[
+          d_{kj}'=\mathrm{sign}(d_{kj})(|d_{kj}|-\Delta)
+        \]
+        もしくは hard-threshold
+        \[
+          d_{kj}'=d_{kj}I(|d_{kj}|\ge\Delta)
+        \]
+        で縮小させる。
+        \begin{figure}[htb]
+          \centering
+          \includegraphics[width=4cm]{./images/thresholds.jpg}
+        \end{figure}
+      \item すなわち、以下。
+        \[
+          \bar{x}_{kj}'=\bar{x}_j+m_k(s_j+s_0)d_{jk}'
+        \]
+        寄与の小さい特徴量を無視するようになっている。
+      \item Diagonal LDA の discriminant score の$\bar{x}_{kj}$の代わりに、$\bar{x}_{kj}'$を使えば、NSCの完成。
+    \end{itemize}
+  \end{frame}
 \begin{comment} % 再生核ヒルベルト空間の話を本当にするのか
   \section{再生核ヒルベルト空間\\(Reproducing Kernel Hilbert Space, RKHS)}
   \begin{frame}{今こそRKHS - カーネル法(Kernel Method)}
