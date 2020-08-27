@@ -97,19 +97,19 @@
     \begin{itemize}
       \item discriminant score は距離に見える.\\
         →Diagonal LDA は, 適当な標準化をしたデータにおける nearest centroid 法のようにも見える.
-      \item 変数間の共分散が$0$という仮定を、独立律(independent rule)ともいう。
-      \item 高次元の時には、effective なことが多いらしい。
-      \item この方法の欠点の一つは、特徴量選択(feature selection)ができないこと。高次元の入力の時には、一部の変数を選び出せる方法を使いたい。\\
-        →もっと正則化の条件を強めるとパフォーマンスがさらに上がるらしい。
-      \item 次は、特徴量選択が行われるような正則化の条件をかけたバージョンを考えます。
+      \item 変数間の共分散が$0$という仮定を, 独立律(independent rule)ともいう. 
+      \item 高次元の時には, effective なことが多いらしい. 
+      \item この方法の欠点の一つは, 特徴量選択(feature selection)ができないこと. 高次元の入力の時には, 一部の変数を選び出せる方法を使いたい. \\
+        →もっと正則化の条件を強めるとパフォーマンスがさらに上がるらしい.
+      \item 次は, 特徴量選択が行われるような正則化の条件をかけたバージョンを考えます. 
     \end{itemize}
   \end{frame}
   \begin{frame}{Nearest Shrunken Centroids}
-    前出の Diagonal LDA = Nearest Centroid 法の centroid を縮小(shrinkage)させることで、特徴量選択を行えるようにする。
+    前出の Diagonal LDA = Nearest Centroid 法の centroid を縮小(shrinkage)させることで, 特徴量選択を行えるようにする. 
     \begin{itemize}
-      \item 基本的な計算は、Diagonal LDAと一緒。
-      \item discriminant score の計算に使うcentroid を単純な平均$\bar{x}_{kj}$から変える。
-      \item まず、あるパラメータ$X_j$のクラス$k$内での平均$\bar{x}_{kj}$と全体での平均$\bar{x}_j$の差を標準化する。
+      \item 基本的な計算は, Diagonal LDAと一緒. 
+      \item discriminant score の計算に使うcentroid を単純な平均$\bar{x}_{kj}$から変える.
+      \item まず, あるパラメータ$X_j$のクラス$k$内での平均$\bar{x}_{kj}$と全体での平均$\bar{x}_j$の差を標準化する. 
         \begin{columns}[t]
           \begin{column}{0.1\columnwidth}
             % 文頭を揃えるためのからのカラム
@@ -118,7 +118,7 @@
             \[
               d_{kj}=\frac{\bar{x}_{kj}-\bar{x}_j}{m_k(s_j+s_0b)}
             \]
-            ただし、各項は以下。
+            ただし, 各項は以下. 
             \begin{align*}
               &m_k=\frac{1}{N_k}-\frac{1}{N}\colon \mbox{疑問点}\\
               &s_0=\mbox{小さな定数}\\
@@ -144,17 +144,17 @@
         \[
           d_{kj}'=d_{kj}I(|d_{kj}|\ge\Delta)
         \]
-        で縮小させる。
+        で縮小させる.
         \begin{figure}[htb]
           \centering
           \includegraphics[width=4cm]{./images/thresholds.jpg}
         \end{figure}
-      \item すなわち、以下。
+      \item すなわち, 以下. 
         \[
           \bar{x}_{kj}'=\bar{x}_j+m_k(s_j+s_0)d_{jk}'
         \]
-        寄与の小さい特徴量を無視するようになっている。
-      \item Diagonal LDA の discriminant score の$\bar{x}_{kj}$の代わりに、$\bar{x}_{kj}'$を使えば、NSCの完成。
+        寄与の小さい特徴量を無視するようになっている.
+      \item Diagonal LDA の discriminant score の$\bar{x}_{kj}$の代わりに, $\bar{x}_{kj}'$を使えば, NSCの完成. 
     \end{itemize}
   \end{frame}
 \begin{comment} % 再生核ヒルベルト空間の話を本当にするのか
