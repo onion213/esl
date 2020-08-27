@@ -40,9 +40,9 @@
       \item 流れを書く.
     \end{itemize}
   \end{frame}
-  \section{}
+  \section{LDAの正則化 - Diagonal LDA と NSC\\p.651-}
   \begin{frame}{LDAの復習1 - コンセプト}
-    $p\gg N$問題の最初の回避策は, ``Diagonal LDA''という線型判別法の強烈な正規化バージョン.
+    $p\gg N$問題の最初の回避策は, ``Diagonal LDA''という線型判別法の強烈な正則化バージョン.
 
     とりあえず, LDAの復習. (不要であれば飛ばします. )
     \begin{itemize}
@@ -76,7 +76,7 @@
         \]
     \end{itemize}
   \end{frame}
-  \begin{frame}{Diagonal LDA - 線型判別法の強烈な正規化バージョン}
+  \begin{frame}{Diagonal LDA - 線型判別法の強烈な正則化バージョン}
     \begin{itemize}
       \item 基本的なコンセプトは, 前述のLDAと同じ. 以下の条件を追加する.
         \[
@@ -92,7 +92,7 @@
         \]
     \end{itemize}
   \end{frame}
-  \begin{frame}{Diagonal LDA - 線型判別法の強烈な正規化バージョン}
+  \begin{frame}{Diagonal LDA - 線型判別法の強烈な正則化バージョン}
     Diagonal LDAについて何点か補足.
     \begin{itemize}
       \item discriminant score は距離に見える.\\
@@ -100,8 +100,8 @@
       \item 変数間の共分散が$0$という仮定を、独立律(independent rule)ともいう。
       \item 高次元の時には、effective なことが多いらしい。
       \item この方法の欠点の一つは、特徴量選択(feature selection)ができないこと。高次元の入力の時には、一部の変数を選び出せる方法を使いたい。\\
-        →もっと正規化の条件を強めるとパフォーマンスがさらに上がるらしい。
-      \item 次は、特徴量選択が行われるような正規化の条件をかけたバージョンを考えます。
+        →もっと正則化の条件を強めるとパフォーマンスがさらに上がるらしい。
+      \item 次は、特徴量選択が行われるような正則化の条件をかけたバージョンを考えます。
     \end{itemize}
   \end{frame}
   \begin{frame}{Nearest Shrunken Centroids}
