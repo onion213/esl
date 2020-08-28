@@ -19,7 +19,7 @@
 
 \begin{document}
   \maketitle
-  \section{introduction\\p.653-}
+  \section{Introduction\\p.653-}
   \begin{frame}{本日のお題 - $p \gg N$ 問題}
     特徴量の数がサンプル数よりもずっと大きいとき($p \gg N$)に困っちゃう話.
     \begin{itemize}
@@ -163,8 +163,49 @@
     \end{itemize}
   \end{frame}
   \section{2次で正則化した線型分類\\p.654-}
-  \begin{frame}
-
+  \begin{frame}{Regularized Discriminant Analysis}
+    \begin{itemize}
+      \item 判別分析の正則化を考える.
+      \item 以前見た正則化は, LDA と QDA でバランスを取るために, 分散行列を以下で計算した.
+        \[
+          \hat{\Sigma}_k(\alpha)=\alpha\hat{\Sigma}_k+(1-\alpha)\hat{\Sigma}
+        \]
+      \item 今回は違うバージョン. 対角行列に近づけようとする.
+        \[
+          \hat{\Sigma}(\gamma)=\gamma\hat{\Sigma}+(1-\gamma)\mathrm{diag}(\hat{\Sigma})
+        \]
+      \item 上記の正則化で,  $\gamma=0$のときは, Diagonal LDA, すなわち, 縮小のない NSC と同じ.
+      \item ridge回帰が分散共分散行列を対角行列に近づけようとするのと, 似ている.
+        \[
+          \hat{\beta}^{\mathrm{ridge}}=(\mathbf{X}^{\mathrm{T}}\mathbf{X}+\lambda\mathbf{I})^{-1}\mathbf{X}^{\mathrm{T}}\mathbf{y}
+        \]
+      \item 線型判別を, 各クラスに数値を割り当てた線型回帰と思うと, ridge回帰との関連をより正確に記述できるそう.
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{ロジスティック回帰}
+    \begin{itemize}
+      \item 以下の式を使ってきた.
+        \[
+          \probability{G=k \mid X=x}=\frac{\exp(\beta_{k0}+x^{\mathrm{T}}\beta_k)}{\sum_l\exp(\beta_{l0}+x^{\mathrm{T}}\beta_l)}
+        \]
+      \item 対数尤度に正則化項を加えた以下を最大化する.
+        \[
+          \sum_{i=1}^N\log \probability{g_i\mid x_i}-\frac{\lambda}{2}\sum_{k=1}^K||\beta_k||^2
+        \]
+      \item 1個目の定式化だと, over-parametrized だけど, 正則化項のおかげでいい感じ.
+      \item 定数項のみいい感じじゃないので, 適当に条件加えよう.
+    \end{itemize}
+    \begin{figure}[htb]
+      \centering
+      \includegraphics[width=4cm]{./images/logistic-redundancy.jpg}
+    \end{figure}
+  \end{frame}
+  \begin{frame}{ロジスティック回帰}
+    \begin{itemize}
+      \item 前述の最大化問題は凸なので, Newton 法とかで解ける.
+      \item separable なデータに対して, $\lambda\to 0$とすると, マージン最大化と同じ結果になる. \\
+        → SVM もうまく関連付けられそう. 
+    \end{itemize}
   \end{frame}
 \begin{comment} % 再生核ヒルベルト空間の話を本当にするのか
   \section{再生核ヒルベルト空間\\(Reproducing Kernel Hilbert Space, RKHS)}
