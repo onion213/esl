@@ -1,4 +1,8 @@
 \documentclass[dvipdfmx,8pt]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[ansinew]{inputenc}
+
 \usepackage{bxdpx-beamer} % dvipdfmxなので必要
 \usepackage{pxjahyper} % 日本語のしおり用
 % \usepackage{minijs} % フォントの設定?pLaTeX, upLaTaXなら不要
@@ -177,7 +181,7 @@
       \item 上記の正則化で,  $\gamma=0$のときは, Diagonal LDA, すなわち, 縮小のない NSC と同じ.
       \item ridge回帰が分散共分散行列を対角行列に近づけようとするのと, 似ている.
         \[
-          \hat{\beta}^{\mathrm{ridge}}=(\mathbf{X}^{\mathrm{T}}\mathbf{X}+\lambda\mathbf{I})^{-1}\mathbf{X}^{\mathrm{T}}\mathbf{y}
+          \hat{\beta}^{\mathrm{ridge}}=(\textbf{X}^{\mathrm{T}}\textbf{X}+\lambda\textbf{I})^{-1}\textbf{X}^{\mathrm{T}}\textbf{y}
         \]
       \item 線型判別を, 各クラスに数値を割り当てた線型回帰と思うと, ridge回帰との関連をより正確に記述できるそう.
     \end{itemize}
@@ -203,8 +207,43 @@
   \begin{frame}{ロジスティック回帰}
     \begin{itemize}
       \item 前述の最大化問題は凸なので, Newton 法とかで解ける.
-      \item separable なデータに対して, $\lambda\to 0$とすると, マージン最大化と同じ結果になる. \\
-        → SVM もうまく関連付けられそう. 
+      \item separable なデータに対して, $\lambda\to 0$とすると, マージン最大化と同じ結果になる.(?) \\
+        → SVM もうまく関連付けられそう.
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{Support Vector Classifier}
+    \begin{itemize}
+      \item 前に出てきた話。マージン最大化。
+      \item $p \gg N$のとき、ほぼ確で線型分離可能なので、attractive.
+      \item 正則化しなくても有効。頑張って正則化しても、正則化なしと同程度のパフォーマンスのことが多い。
+      \item 多数のクラスへの分類への応用方法を２つ紹介。
+        \begin{itemize}
+          \item one versus one (ovo)\\
+            全ての２つのクラスの組み合わせ($K(K-1)/2$通り)全てについて、SVMで分類する。\\
+            点xについて、上記の分類全ての結果、最も多く分類されるクラスを推定値とする。
+          \item one versus all (ova)\\
+            各クラスとそのクラス以外に分けてSVMで分類する。\\
+            教会からの符号付き距離(confidence)が最も大きいクラスを推定値とする。
+        \end{itemize}
+      \item 正則化ロジスティック回帰と近しい結果を返す。
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{特徴量選択}
+    \begin{itemize}
+      \item $p$が大きい時、特徴量選択は重要。解釈可能性のため。
+      \item DLDA, LR, SVC は、アルゴリズム内に特徴量選択の機能を含まない。(二次正則化のため)\\
+        →外付けの特徴量選択手法が提案されている。
+      \item 例。Recursive Feature Elimination.\\
+        重みの小さい特徴量から無視していく。\\
+        →あまり上手くいかないらしい。\\
+        (`` we do not have an explanation for this behavior.'')
+      \item Kernel 法使って外れ値に強くさせることも可能。
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{計算の工夫}
+    $p \gg N$で二次正則化を考えた時に使える計算の工夫について。
+    \begin{itemize}
+      \item a
     \end{itemize}
   \end{frame}
 \begin{comment} % 再生核ヒルベルト空間の話を本当にするのか
