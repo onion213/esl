@@ -332,20 +332,100 @@
     \end{itemize}
   \end{frame}
   \begin{frame}{Fused Lasso}
-    特徴量たちが順序を持つ場合。時系列データとか。
+    特徴量たちが順序を持つ場合. 時系列データとか.
     \begin{itemize}
-      \item 隣り合う特徴量について、回帰係数を近づけたい。\\
-        →以下を最小化する。
+      \item 隣り合う特徴量について, 回帰係数を近づけたい. \\
+        →以下を最小化する.
         \[
           \sum_{i=1}^N(y_i-\beta_0-\sum_{j=1}^px_ij\beta_j)^2+\lambda_1\sum_{j=1}^p|\beta|+\lambda_2\sum_{j=1}^{p-1}|\beta_{j+1}-\beta_j|
         \]
-      \item 隣り合う特徴量の間隔が一定でないなら、それを考慮して以下を使う。
+      \item 隣り合う特徴量の間隔が一定でないなら, それを考慮して以下を使う.
         \[
           \lambda_2\sum_{j=1}^{p-1}\frac{|\beta_{j+1}-\beta_j|}{|t_{j+1}-t_j|}
         \]
     \end{itemize}
   \end{frame}
-  
+  \begin{frame}{特徴量が明確でない場合 - String Kernel}
+    分類したいけど, 特徴量がわからない場合. (タンパク質の構造)\\
+    分類したいけど, あまりにも次元が大きすぎる場合. (文書の分類)
+
+    →(非)類似度が測れればいろいろできる.
+
+    \vspace{\baselineskip}
+
+    タンパク質の構造による分類の例
+    \begin{itemize}
+      \item タンパク質は20種類のアミノ酸からなる列. 文字列で表せる.
+        \begin{figure}
+          \centering
+          \includegraphics[width=5cm]{./images/protains.png}
+        \end{figure}
+      \item 部分文字列は良い特徴量になる. タンパク質$x$と$m$文字のアミノ酸列$a$に対して,
+        $\varphi_a(x)$を$x$に含まれる$a$の数とする.
+      \item 特徴量を
+        \[
+          \Phi_m(x)=\{\varphi_a(x)\}_{a\in\mathcal{A}_m}
+        \]
+        で定める.
+      \item 類似度を内積として,
+        \[
+          K_m(x_1,x_2)=\langle\Phi_m(x_1),\Phi_m(x_2)\rangle
+        \]
+        で定める. (ちょっとRKHS感出てきた. )
+      \item あとは, SVMとかすれば良い.
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{Kernelization}
+    \begin{itemize}
+      \item 様々な手法を``カーネル化''することができる. 簡単にいうと, データそのものの値ではなく, 各データの組の内積(類似度)や距離(非類似度)に注目しようという話. RKHS感が出てきている.
+      \item 内積や距離の情報から計算できるモデルの例.\\
+        SVM, 最近傍法, ロジスティック回帰, 主成分.
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{k-NN の Kernelization}
+    内積の情報をもとにK近傍を見つけるために, 以下を用いれば良い. 
+    \[
+      ||x_i-x_{i'}||^2=\langle x_i,x_i\rangle+\langle x_{i'},x_{i'}\rangle-2\langle x_i,x_{i'}\rangle
+    \]
+  \end{frame}
+  \begin{frame}{Nearest Centroid の Kernelization}
+    K-NN と似たイメージで,  Nearest Centroid 法もカーネル化できる. 
+    \[
+      ||x-\bar{x}_k||^2=\langle x,x\rangle-\frac{2}{N_k}\sum_{g_i=k}\langle x,x_i\rangle+\frac{1}{N_k^2}\sum_{g_i=k}\sum_{g_j=k}\langle x_i,x_j\rangle
+    \]
+  \end{frame}
+  \begin{frame}{ロジスティック回帰の Kernelization}
+    \url{https://www.ism.ac.jp/~fukumizu/svm-ism.pdf}
+    \begin{itemize}
+      \item ロジスティック回帰の Lagrange Dual Form は以下. 
+        \[
+          L_D=\sum_{i=1}^N\alpha_i-\frac{1}{2}\sum_{i=1}^N\sum_{i'=1}^N\alpha_i\alpha_{i'}y_iy_{i'}\langle x_i,x_{i'}\rangle
+        \]
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{PCA の Kernelization}
+    \begin{itemize}
+      \item データ行列$\textbf{X}$の特異値分解を$\textbf{X}=\textbf{UDV}^{\mathrm{T}}$とすると, 主成分は以下. 
+        \[
+          \textbf{Z}=\textbf{UD}
+        \]
+      \item ここから, 簡単に, 主成分をデータの分散共分散行列の対角化として得られることがわかる. (略)
+      \item 分散共分散行列
+        \[
+          \hat{\textbf{K}}=(\langle x_i-\bar{x}, x_{i'}-\bar{x}\rangle)_{i,i'}
+        \]
+        なので, Kernelization できている. 
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{Kernelization でできないこと}
+    最適化を内積のみを用いて表すのは便利. じゃあできないことは?
+    \begin{itemize}
+      \item 変数の標準化
+      \item 各変数の寄与の推定
+      \item 効果のない変数と効果のある変数の見分け
+    \end{itemize}
+    総じて, 一つ一つの入力変数に注目は出来ない, というのが弱み. 
+  \end{frame}
 \begin{comment} % 再生核ヒルベルト空間の話を本当にするのか
   \section{再生核ヒルベルト空間\\(Reproducing Kernel Hilbert Space, RKHS)}
   \begin{frame}{今こそRKHS - カーネル法(Kernel Method)}
