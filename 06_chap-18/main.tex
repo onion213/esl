@@ -383,13 +383,13 @@
     \end{itemize}
   \end{frame}
   \begin{frame}{k-NN の Kernelization}
-    内積の情報をもとにK近傍を見つけるために, 以下を用いれば良い. 
+    内積の情報をもとにK近傍を見つけるために, 以下を用いれば良い.
     \[
       ||x_i-x_{i'}||^2=\langle x_i,x_i\rangle+\langle x_{i'},x_{i'}\rangle-2\langle x_i,x_{i'}\rangle
     \]
   \end{frame}
   \begin{frame}{Nearest Centroid の Kernelization}
-    K-NN と似たイメージで,  Nearest Centroid 法もカーネル化できる. 
+    K-NN と似たイメージで,  Nearest Centroid 法もカーネル化できる.
     \[
       ||x-\bar{x}_k||^2=\langle x,x\rangle-\frac{2}{N_k}\sum_{g_i=k}\langle x,x_i\rangle+\frac{1}{N_k^2}\sum_{g_i=k}\sum_{g_j=k}\langle x_i,x_j\rangle
     \]
@@ -397,7 +397,7 @@
   \begin{frame}{ロジスティック回帰の Kernelization}
     \url{https://www.ism.ac.jp/~fukumizu/svm-ism.pdf}
     \begin{itemize}
-      \item ロジスティック回帰の Lagrange Dual Form は以下. 
+      \item ロジスティック回帰の Lagrange Dual Form は以下.
         \[
           L_D=\sum_{i=1}^N\alpha_i-\frac{1}{2}\sum_{i=1}^N\sum_{i'=1}^N\alpha_i\alpha_{i'}y_iy_{i'}\langle x_i,x_{i'}\rangle
         \]
@@ -405,7 +405,7 @@
   \end{frame}
   \begin{frame}{PCA の Kernelization}
     \begin{itemize}
-      \item データ行列$\textbf{X}$の特異値分解を$\textbf{X}=\textbf{UDV}^{\mathrm{T}}$とすると, 主成分は以下. 
+      \item データ行列$\textbf{X}$の特異値分解を$\textbf{X}=\textbf{UDV}^{\mathrm{T}}$とすると, 主成分は以下.
         \[
           \textbf{Z}=\textbf{UD}
         \]
@@ -414,7 +414,7 @@
         \[
           \hat{\textbf{K}}=(\langle x_i-\bar{x}, x_{i'}-\bar{x}\rangle)_{i,i'}
         \]
-        なので, Kernelization できている. 
+        なので, Kernelization できている.
     \end{itemize}
   \end{frame}
   \begin{frame}{Kernelization でできないこと}
@@ -424,13 +424,11 @@
       \item 各変数の寄与の推定
       \item 効果のない変数と効果のある変数の見分け
     \end{itemize}
-    総じて, 一つ一つの入力変数に注目は出来ない, というのが弱み. 
+    総じて, 一つ一つの入力変数に注目は出来ない, というのが弱み.
   \end{frame}
-\begin{comment} % 再生核ヒルベルト空間の話を本当にするのか
-  \section{再生核ヒルベルト空間\\(Reproducing Kernel Hilbert Space, RKHS)}
+  \section{余談 - 再生核ヒルベルト空間\\(Reproducing Kernel Hilbert Space, RKHS)}
   \begin{frame}{今こそRKHS - カーネル法(Kernel Method)}
     \begin{itemize}
-      \item RKHSは, カーネル法を実現するときに重要になる数学的な対象です.
       \item まずはカーネル法について, やりたいこととざっくり全体像の整理. \\
         \begin{itemize}
           \item 線形に分類できないもの(同心円が典型例)をうまく分類したい.
@@ -442,13 +440,28 @@
             \[
               (x,y)\mapsto (x,y,x^2,xy,y^2)
             \]
-          \item この, 変数変換の写像を``カーネル''と呼ぶ.
           \item 一方, 高次元に写すと計算量が増える. 困る. \\
-            →高次元でも計算が楽なカーネルはないものか...
-          \item 正定値カーネルは内積計算が楽!内積で計算できるモデルならいい感じに使える!\\
-            (SVM, CPA, etc...)
+            →高次元でも計算が楽なものはないのか...
+          \item 数学の話。再生核ヒルベルト空間(RKHS)という数学的対象とカーネル関数というある条件を満たす関数が1対1対応する。
+            \begin{itemize}
+              \item 再生核ヒルベルト空間は、高次元に写す先の空間に相当。
+              \item カーネル関数は、高次元空間における内積を直接計算する関数に相当。
+            \end{itemize}
+          \item RKHSは内積計算が楽!内積で計算できるモデルならいい感じに使える!\\
+            (SVM, CPA, etc...先述のものたちとか)
+          \item 例えば、以下を考える。
+            \[
+              \Phi\colon \mathbb{R}^2\to\mathbb{R}^3, \Phi(x_1,x_2)=(x_1^2,x_2^2,\sqrt{2}x_1x_2)
+            \]
+            対応するRHKSは$\mathbb{R}^3$.
+            カーネル関数は、
+            \begin{eqnarray*}
+              K(x,y)&=&\langle(x_1^2,x_2^2,\sqrt{2}x_1x_2),(y_1^2,y_2^2,\sqrt{2}y_1y_2)\rangle\\
+              &=&x_1^2y_1^2+x_2^2y_2^2+2x_1x_2y_1y_2\\
+              &=&(x_1y_1+x_2y_2)^2\\
+              &=&\langle x,y\rangle^2
+            \end{eqnarray*}
         \end{itemize}
     \end{itemize}
   \end{frame}
-\end{comment}
 \end{document}
