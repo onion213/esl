@@ -442,19 +442,19 @@
             \]
           \item 一方, 高次元に写すと計算量が増える. 困る. \\
             →高次元でも計算が楽なものはないのか...
-          \item 数学の話。再生核ヒルベルト空間(RKHS)という数学的対象とカーネル関数というある条件を満たす関数が1対1対応する。
+          \item 数学の話. 再生核ヒルベルト空間(RKHS)という数学的対象とカーネル関数というある条件を満たす関数が1対1対応する.
             \begin{itemize}
-              \item 再生核ヒルベルト空間は、高次元に写す先の空間に相当。
-              \item カーネル関数は、高次元空間における内積を直接計算する関数に相当。
+              \item 再生核ヒルベルト空間は, 高次元に写す先の空間に相当. 
+              \item カーネル関数は, 高次元空間における内積を直接計算する関数に相当. 
             \end{itemize}
           \item RKHSは内積計算が楽!内積で計算できるモデルならいい感じに使える!\\
             (SVM, CPA, etc...先述のものたちとか)
-          \item 例えば、以下を考える。
+          \item 例えば, 以下を考える. 
             \[
               \Phi\colon \mathbb{R}^2\to\mathbb{R}^3, \Phi(x_1,x_2)=(x_1^2,x_2^2,\sqrt{2}x_1x_2)
             \]
             対応するRHKSは$\mathbb{R}^3$.
-            カーネル関数は、
+            カーネル関数は, 
             \begin{eqnarray*}
               K(x,y)&=&\langle(x_1^2,x_2^2,\sqrt{2}x_1x_2),(y_1^2,y_2^2,\sqrt{2}y_1y_2)\rangle\\
               &=&x_1^2y_1^2+x_2^2y_2^2+2x_1x_2y_1y_2\\
@@ -463,5 +463,29 @@
             \end{eqnarray*}
         \end{itemize}
     \end{itemize}
+  \end{frame}
+  \section{Supervised Principal Component\\p. 674-}
+  \begin{frame}{Supervised Principal Component}
+    目的変数をよく説明できて, 分散が大きいような線形結合成分を取りたい. 
+    \begin{figure}[htb]
+      \centering
+      \includegraphics[width=8cm]{./images/supervised-pca.png}
+    \end{figure}
+    \begin{description}[Step. 2(a)]
+      \item[Step. 1\ \ \ \ ] 普通に1変数線形回帰. 入力変数と目的変数の関係の強さを調べる.
+      \item[Step. 2(a)] 変数選択からの主成分分析.
+      \item[Step. 2(b)] 主変数での多変数回帰.
+      \item[Step. 3\ \ \ \ ] 交差検証.
+    \end{description}
+  \end{frame}
+  \begin{frame}{Supervised PCA と Partial Least Squares}
+    3.5.2 で見た Partial Least Squares も, 説明力のある主成分を見つけようとする手法. 
+    \begin{figure}[htb]
+      \centering
+      \includegraphics[width=8cm]{./images/pls.png}
+    \end{figure}
+    (アルゴリズム見てもイメージ湧かないかも)
+
+    両者の違いは, SPCA は要らない特徴量を切り捨てるが, PLS は downweight するだけという点. 
   \end{frame}
 \end{document}
