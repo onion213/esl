@@ -213,37 +213,107 @@
   \end{frame}
   \begin{frame}{Support Vector Classifier}
     \begin{itemize}
-      \item 前に出てきた話。マージン最大化。
-      \item $p \gg N$のとき、ほぼ確で線型分離可能なので、attractive.
-      \item 正則化しなくても有効。頑張って正則化しても、正則化なしと同程度のパフォーマンスのことが多い。
-      \item 多数のクラスへの分類への応用方法を２つ紹介。
+      \item 前に出てきた話. マージン最大化.
+      \item $p \gg N$のとき, ほぼ確で線型分離可能なので, attractive.
+      \item 正則化しなくても有効. 頑張って正則化しても, 正則化なしと同程度のパフォーマンスのことが多い.
+      \item 多数のクラスへの分類への応用方法を２つ紹介.
         \begin{itemize}
           \item one versus one (ovo)\\
-            全ての２つのクラスの組み合わせ($K(K-1)/2$通り)全てについて、SVMで分類する。\\
-            点xについて、上記の分類全ての結果、最も多く分類されるクラスを推定値とする。
+            全ての２つのクラスの組み合わせ($K(K-1)/2$通り)全てについて, SVMで分類する. \\
+            点xについて, 上記の分類全ての結果, 最も多く分類されるクラスを推定値とする.
           \item one versus all (ova)\\
-            各クラスとそのクラス以外に分けてSVMで分類する。\\
-            教会からの符号付き距離(confidence)が最も大きいクラスを推定値とする。
+            各クラスとそのクラス以外に分けてSVMで分類する. \\
+            教会からの符号付き距離(confidence)が最も大きいクラスを推定値とする.
         \end{itemize}
-      \item 正則化ロジスティック回帰と近しい結果を返す。
+        ovo と ova は SVC に限らず使える手法。
+      \item 正則化ロジスティック回帰と近しい結果を返す.
     \end{itemize}
   \end{frame}
   \begin{frame}{特徴量選択}
     \begin{itemize}
-      \item $p$が大きい時、特徴量選択は重要。解釈可能性のため。
-      \item DLDA, LR, SVC は、アルゴリズム内に特徴量選択の機能を含まない。(二次正則化のため)\\
-        →外付けの特徴量選択手法が提案されている。
-      \item 例。Recursive Feature Elimination.\\
-        重みの小さい特徴量から無視していく。\\
-        →あまり上手くいかないらしい。\\
+      \item $p$が大きい時, 特徴量選択は重要. 解釈可能性のため.
+      \item DLDA, LR, SVC は, アルゴリズム内に特徴量選択の機能を含まない. (二次正則化のため)\\
+        →外付けの特徴量選択手法が提案されている.
+      \item 例. Recursive Feature Elimination.\\
+        重みの小さい特徴量から無視していく. \\
+        →あまり上手くいかないらしい. \\
         (`` we do not have an explanation for this behavior.'')
-      \item Kernel 法使って外れ値に強くさせることも可能。
+      \item Kernel 法使って外れ値に強くさせることも可能.
     \end{itemize}
   \end{frame}
   \begin{frame}{計算の工夫}
-    $p \gg N$で二次正則化を考えた時に使える計算の工夫について。
+    $p \gg N$で二次正則化の線形モデルを考えた時に使える計算の工夫について. \\
+    まずは最も簡単な ridge 回帰について.
     \begin{itemize}
-      \item a
+      \item 以下の最小化を考える.
+        \[
+          \sum_{i=1}^N\left(y_i-\beta_0+\sum_{j=1}^px_{ij}\beta_j\right) ^2+\lambda\sum_{j=1}^p\beta_j^2
+        \]
+      \item これは, 解けて解は以下.
+        \[
+          \hat{\beta}=(\textbf{X}^\mathrm{T}\textbf{X}+\lambda\textbf{I})^{-1}\textbf{X}^\mathrm{T}\textbf{y}
+        \]
+      \item ここで, 行列$\textbf{X}$の特異値分解を考える.
+        \[
+          \textbf{X}=\textbf{U}\textbf{D}\textbf{V}^{\mathrm{T}}=\textbf{R}\textbf{V}^{\mathrm{T}}
+        \]
+      \item すると, 上記の解は以下になる.
+        \[
+          \hat{\beta}=\textbf{V}(\textbf{R}^\mathrm{T}\textbf{R}+\lambda\textbf{I})^{-1}\textbf{R}^\mathrm{T}\textbf{y}
+        \]
+      \item $\textbf{R}$を入力, $\textbf{y}$を出力としたときの ridge 回帰の結果を$\hat{\theta}$とすると, $\hat{\beta}=\textbf{V}\hat{\theta}$となっている.
+      \item 結論, $p$次元データの回帰の計算を$N$次元データの計算に還元できる.
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{計算の工夫}
+    ridge 回帰に関する考察は、より一般的な話につながる。
+    \begin{itemize}
+      \item 線形モデルを考える。
+        \[
+          Y=f(X)=\beta_0+X^{\mathrm{T}}\beta
+        \]
+      \item 任意の損失関数を取る。
+        \[
+          \sum_{i=1}^NL(y_i,f(x_i))
+        \]
+      \item 入力変数のデータの行列$\textbf{X}$を特異値分解して、$N\times N$行列$\textbf{R}$を作る。
+        \[
+          \textbf{X}=\textbf{U}\textbf{D}\textbf{V}^{\mathrm{T}}=\textbf{R}\textbf{V}^{\mathrm{T}}
+        \]
+      \item 以下の最小化を考える。
+        \[
+          (\hat{\beta}_0,\hat{\beta})=\mathrm{arg}\min_{\beta_0,\beta}\sum_{i=1}^NL(y_i,\beta_0+x_i^\mathrm{T}\beta)+\lambda\beta^\mathrm{T}\beta
+        \]
+        \[
+          (\hat{\theta}_0,\hat{\theta})=\mathrm{arg}\min_{\theta_0,\theta}\sum_{i=1}^NL(y_i,\theta_0+r_i^\mathrm{T}\theta)+\lambda\theta^\mathrm{T}\theta
+        \]
+      \item すると、以下が成り立つ。
+        \[
+          \hat{\beta}_0=\hat{\theta}_0,\hat{\beta}=\textbf{V}\hat{\theta}
+        \]
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{計算の工夫}
+    \begin{itemize}
+      \item LR, LDA, SVM など広く応用可能。
+      \item $L_1$正則化の時には使えないので注意。
+      \item $\lambda$は交差検証とかで。
+    \end{itemize}
+  \end{frame}
+  \section{$L_1$正則化線形分類\\p. 661-}
+\begin{frame}{$L_1$正則化線形分類}
+    ここまで$L_2$正則化。ここから$L_1$正則化。嬉しいポイントは勝手に特徴量選択してくれること。
+    \begin{itemize}
+      \item 例えば、lasso 回帰。以下を最小化。
+        \[
+          \sum_{i=1}^N\left(y_i-\beta_0+\sum_{j=1}^px_{ij}\beta_j\right) ^2+\lambda\sum_{j=1}^p|\beta_j|
+        \]
+      \item $L_1$正規化は勝手に特徴量選択をしてくれる。
+        \begin{figure}[htb]
+          \centering
+          \includegraphics[width=5cm]{./images/automatic-feature-selection.jpg}
+        \end{figure}
+      \item 選ばれる特徴量は高々$N$個になる。(convex duality より。凸共役?)
     \end{itemize}
   \end{frame}
 \begin{comment} % 再生核ヒルベルト空間の話を本当にするのか
