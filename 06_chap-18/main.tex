@@ -225,7 +225,7 @@
             各クラスとそのクラス以外に分けてSVMで分類する. \\
             教会からの符号付き距離(confidence)が最も大きいクラスを推定値とする.
         \end{itemize}
-        ovo と ova は SVC に限らず使える手法。
+        ovo と ova は SVC に限らず使える手法.
       \item 正則化ロジスティック回帰と近しい結果を返す.
     \end{itemize}
   \end{frame}
@@ -266,28 +266,28 @@
     \end{itemize}
   \end{frame}
   \begin{frame}{計算の工夫}
-    ridge 回帰に関する考察は、より一般的な話につながる。
+    ridge 回帰に関する考察は, より一般的な話につながる.
     \begin{itemize}
-      \item 線形モデルを考える。
+      \item 線形モデルを考える.
         \[
           Y=f(X)=\beta_0+X^{\mathrm{T}}\beta
         \]
-      \item 任意の損失関数を取る。
+      \item 任意の損失関数を取る.
         \[
           \sum_{i=1}^NL(y_i,f(x_i))
         \]
-      \item 入力変数のデータの行列$\textbf{X}$を特異値分解して、$N\times N$行列$\textbf{R}$を作る。
+      \item 入力変数のデータの行列$\textbf{X}$を特異値分解して, $N\times N$行列$\textbf{R}$を作る.
         \[
           \textbf{X}=\textbf{U}\textbf{D}\textbf{V}^{\mathrm{T}}=\textbf{R}\textbf{V}^{\mathrm{T}}
         \]
-      \item 以下の最小化を考える。
+      \item 以下の最小化を考える.
         \[
           (\hat{\beta}_0,\hat{\beta})=\mathrm{arg}\min_{\beta_0,\beta}\sum_{i=1}^NL(y_i,\beta_0+x_i^\mathrm{T}\beta)+\lambda\beta^\mathrm{T}\beta
         \]
         \[
           (\hat{\theta}_0,\hat{\theta})=\mathrm{arg}\min_{\theta_0,\theta}\sum_{i=1}^NL(y_i,\theta_0+r_i^\mathrm{T}\theta)+\lambda\theta^\mathrm{T}\theta
         \]
-      \item すると、以下が成り立つ。
+      \item すると, 以下が成り立つ.
         \[
           \hat{\beta}_0=\hat{\theta}_0,\hat{\beta}=\textbf{V}\hat{\theta}
         \]
@@ -295,27 +295,57 @@
   \end{frame}
   \begin{frame}{計算の工夫}
     \begin{itemize}
-      \item LR, LDA, SVM など広く応用可能。
-      \item $L_1$正則化の時には使えないので注意。
-      \item $\lambda$は交差検証とかで。
+      \item LR, LDA, SVM など広く応用可能.
+      \item $L_1$正則化の時には使えないので注意.
+      \item $\lambda$は交差検証とかで.
     \end{itemize}
   \end{frame}
   \section{$L_1$正則化線形分類\\p. 661-}
 \begin{frame}{$L_1$正則化線形分類}
-    ここまで$L_2$正則化。ここから$L_1$正則化。嬉しいポイントは勝手に特徴量選択してくれること。
+    ここまで$L_2$正則化. ここから$L_1$正則化. 嬉しいポイントは勝手に特徴量選択してくれること.
     \begin{itemize}
-      \item 例えば、lasso 回帰。以下を最小化。
+      \item 例えば, lasso 回帰. 以下を最小化.
         \[
           \sum_{i=1}^N\left(y_i-\beta_0+\sum_{j=1}^px_{ij}\beta_j\right) ^2+\lambda\sum_{j=1}^p|\beta_j|
         \]
-      \item $L_1$正規化は勝手に特徴量選択をしてくれる。
+      \item $L_1$正規化は勝手に特徴量選択をしてくれる.
         \begin{figure}[htb]
           \centering
           \includegraphics[width=5cm]{./images/automatic-feature-selection.jpg}
         \end{figure}
-      \item 選ばれる特徴量は高々$N$個になる。(convex duality より。凸共役?)
+      \item 選ばれる特徴量は高々$N$個になる. (convex duality より. 凸共役?)
     \end{itemize}
   \end{frame}
+  \begin{frame}{Elastic Net}
+    \begin{itemize}
+      \item $L_1$正規化の困るポイント. 相関の強い変数に対応できない. \\
+        $Y=aX_1+b, X_2=X_1,a_1+a_2=a$とすると,
+        \[
+          Y=a_1X_1+a_2X_2+b
+        \]
+        となり, lassoでは$a_2,a_2$を特定できない.
+      \item 回避策として, ridge と lasso の合体を考えるのが Elastic Net. 正則化項は以下.
+        \[
+          \sum_{j=1}^p(\alpha|\beta_j|+(1-\alpha)\beta_j^2)
+        \]
+      \item $alpha$は大抵 pre-chosen. もちろん, 交差検証でも良い.
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{Fused Lasso}
+    特徴量たちが順序を持つ場合。時系列データとか。
+    \begin{itemize}
+      \item 隣り合う特徴量について、回帰係数を近づけたい。\\
+        →以下を最小化する。
+        \[
+          \sum_{i=1}^N(y_i-\beta_0-\sum_{j=1}^px_ij\beta_j)^2+\lambda_1\sum_{j=1}^p|\beta|+\lambda_2\sum_{j=1}^{p-1}|\beta_{j+1}-\beta_j|
+        \]
+      \item 隣り合う特徴量の間隔が一定でないなら、それを考慮して以下を使う。
+        \[
+          \lambda_2\sum_{j=1}^{p-1}\frac{|\beta_{j+1}-\beta_j|}{|t_{j+1}-t_j|}
+        \]
+    \end{itemize}
+  \end{frame}
+  
 \begin{comment} % 再生核ヒルベルト空間の話を本当にするのか
   \section{再生核ヒルベルト空間\\(Reproducing Kernel Hilbert Space, RKHS)}
   \begin{frame}{今こそRKHS - カーネル法(Kernel Method)}
