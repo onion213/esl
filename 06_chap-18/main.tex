@@ -345,6 +345,7 @@
         \]
     \end{itemize}
   \end{frame}
+  \section{特徴量が明確でない場合\\p. 668-}
   \begin{frame}{特徴量が明確でない場合 - String Kernel}
     分類したいけど, 特徴量がわからない場合. (タンパク質の構造)\\
     分類したいけど, あまりにも次元が大きすぎる場合. (文書の分類)
@@ -516,5 +517,60 @@
       \centering
       \includegraphics[width=7cm]{./images/plasso-performance.png}
     \end{figure}
+  \end{frame}
+  \section{Feature Assesment and the Multiple-Testing Problem\\p. 683-}
+  \begin{frame}{Feature Assesment}
+    話がガラッと変わります。``significance of each of the $p$ features.''\\
+    統計的学習というより、仮説検定のお話。
+
+    例えば、患者が病気か否かも知りたいけど、病気か否かを判断する時の注目ポイントも知りたいよね。
+    \begin{figure}[htb]
+      \centering
+      \includegraphics[width=5cm]{./images/radiation-data.png}
+    \end{figure}
+    →右と左で差異の大きい遺伝子を探す。t統計量
+    \[
+      t_j=\frac{\bar{x_{2j}}-\bar{x_{1j}}}{\mathrm{se}_j}
+    \]
+    の 95\% 信頼区間外の遺伝子は significant?\\
+    → No. 遺伝子が多いので 5\% でも結構な数偶然入りうる。\\
+    →Multiple-Testing Problem
+  \end{frame}
+  \begin{frame}{Multiple-Testing Problem}
+    まず t統計量のp値を計算.
+    \begin{itemize}
+      \item 正規分布を仮定する。
+      \item 訓練データの全組み合わせを試し、以下で計算。
+        \[
+          p_j=\frac{1}{K}\sum_{k=1}{K}I(|t_j^k|>|t_j|)
+        \]
+      \item 全組み合わせは膨大なので、ランダムサンプリング。
+      \item 遺伝子は似ているので、他の遺伝子の計算も利用。
+        \[
+          p_j=\frac{1}{MK}\sum_{j'=1}^M\sum_{k=1}{K}I(|t_{j'}^k|>|t_j|)
+        \]
+    \end{itemize}
+    続いて、以下の帰無仮説と対立仮説。
+    \begin{description}
+      \item[$H_{0j}$] 遺伝子$j$は radiation sensitivity に関係ない。
+      \item[$H_{1j}$] 遺伝子$j$は radiation sensitivity に関係ある。
+    \end{description}
+    $p_j<\alpha$ならば、$H_{oj}$を reject としたいが、こうすると false reject が起こる確率(FWER)は$\alpha$よりずっと大きくなる。
+    \[
+      (1-(1-\alpha)^M)
+    \]
+  \end{frame}
+  \begin{frame}{Multiple-Testing Problem}
+    簡単な回避策を一つ紹介。
+
+    \vspace{\baselineskip}
+
+    Bonferroni の方法\\
+    $p_j<\alpha/M$ならば reject とすれば、FWER は$\alpha$以下になる。\\
+    →$M$が大きいと、too conservative.
+
+    \vspace{\baselineskip}
+
+    FWER を抑える他の方法も提案されているらしい。
   \end{frame}
 \end{document}
