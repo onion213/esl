@@ -1,4 +1,4 @@
-\documentclass{jsarticle}
+\documentclass[uplatex]{jsarticle}
 \usepackage[dvipdfmx]{graphicx}
 \usepackage[dvipdfmx]{hyperref}
 \usepackage{pxjahyper}
@@ -129,7 +129,7 @@
   =(\mathbf{y}-\mathbf{X}\beta)^\mathrm{T}(\mathbf{y}-\mathbf{X}\beta)
 \]
 を最小化することで行う。(2個目の式変形は以下の画像を参照。)
-\begin{figure}[h]
+\begin{figure}[htb]
   \includegraphics[width=100mm, angle=270]{fig-cal-1.jpg}
 \end{figure}
 
@@ -138,7 +138,7 @@
   \mathbf{X}^\mathrm{T}(\mathbf{y}-\mathbf{X}\beta)=0
 \]
 となる。(\href{https://qiita.com/AnchorBlues/items/8fe2483a3a72676eb96d}{行列・ベクトルの微分に関しては、こちらを参照。})(計算に関しては以下の画像を参照。)
-\begin{figure}[h]
+\begin{figure}[htb]
   \includegraphics[width=100mm, angle=270]{fig-cal-2.jpg}
 \end{figure}
 
@@ -160,16 +160,15 @@
 \]
 が得られる。よって、分類の推定として、
 \[
-  \hat{G}(x) = \left \{
-  \begin{align}
-    &\mbox{ORANGE} \ &\mathrm{if} \ \hat{f}(x) > 0.5 \\
-    &\mbox{BLUE}  \ &\mathrm{if} \ \hat{f}(x) \le 0.5
-  \end{align}
-  \right .
+  \hat{G}(x) =
+  \begin{cases}
+    \mbox{ORANGE} \quad \mathrm{if} \ \hat{f}(x) > 0.5 \\
+    \mbox{BLUE}  \quad \mathrm{if} \ \hat{f}(x) \le 0.5
+  \end{cases}
 \]
 という基準で分類している。つまり、境界線として、$\hat{f}(x)=0.5$という直線を採用しているのである。($\hat{f}$が線形関数なので、もちろん、境界線も線形になる。)
 
-\begin{figure}[h]
+\begin{figure}[htb]
   \includegraphics{fig2-1.png}
 \end{figure}
 
@@ -224,8 +223,8 @@
 
 最小二乗法を用いた線形回帰と、最近傍法について、上記の2つの指標をざっくり評価すると、以下の通りになる。
 
-\begin{table}[h]
-  \begin{tabular}{llll}
+\begin{table}[htb]
+  \begin{tabular}{lllp{20em}}
     \ & variance & bias & \ \\
     線形モデル & low & high & きれいに分けられるけど、訓練データに合わないことが多い。\\
     最近傍法 & high & low & データにいくらでも合わせられるけど、分け方はぐっちゃぐちゃになることが多い。
@@ -447,7 +446,7 @@ $J(f)$の設定により、「粗さ」というものを具体的に規定し�
 このバランスを取ってあげる必要がある。
 
 モデルの複雑さと、訓練データ、テストデータへの適合度はグラフのようになる。
-\begin{figure}[h]
+\begin{figure}[htb]
   \includegraphics{fig2-11.png}
 \end{figure}
 \end{document}
