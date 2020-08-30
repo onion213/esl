@@ -504,15 +504,15 @@
       \item 通常の SPCA で出力変数$Y$の推定値$\hat{Y}$を計算する.
       \item $X$を入力変数, $\hat{Y}$を出力変数として lasso 回帰する.
     \end{enumerate}
-    アルゴリズムの各ステップの意図は以下。
+    アルゴリズムの各ステップの意図は以下.
     \begin{description}
-      \item[Step. 1] Denoising the Outcome. \\出力変数の生データに含まれるノイズをなくす。
-      \item[Step. 2] Lasso で sparce な回帰をする。
+      \item[Step. 1] Denoising the Outcome. \\出力変数の生データに含まれるノイズをなくす.
+      \item[Step. 2] Lasso で sparce な回帰をする.
     \end{description}
 
     \vspace{\baselineskip}
 
-    パフォーマンス良い。
+    パフォーマンス良い.
     \begin{figure}[htb]
       \centering
       \includegraphics[width=7cm]{./images/plasso-performance.png}
@@ -520,57 +520,127 @@
   \end{frame}
   \section{Feature Assesment and the Multiple-Testing Problem\\p. 683-}
   \begin{frame}{Feature Assesment}
-    話がガラッと変わります。``significance of each of the $p$ features.''\\
-    統計的学習というより、仮説検定のお話。
+    話がガラッと変わります. ``significance of each of the $p$ features.''\\
+    統計的学習というより, 仮説検定のお話.
 
-    例えば、患者が病気か否かも知りたいけど、病気か否かを判断する時の注目ポイントも知りたいよね。
+    例えば, 患者が病気か否かも知りたいけど, 病気か否かを判断する時の注目ポイントも知りたいよね.
     \begin{figure}[htb]
       \centering
       \includegraphics[width=5cm]{./images/radiation-data.png}
     \end{figure}
-    →右と左で差異の大きい遺伝子を探す。t統計量
+    →右と左で差異の大きい遺伝子を探す. t統計量
     \[
       t_j=\frac{\bar{x_{2j}}-\bar{x_{1j}}}{\mathrm{se}_j}
     \]
     の 95\% 信頼区間外の遺伝子は significant?\\
-    → No. 遺伝子が多いので 5\% でも結構な数偶然入りうる。\\
+    → No. 遺伝子が多いので 5\% でも結構な数偶然入りうる. \\
     →Multiple-Testing Problem
   \end{frame}
   \begin{frame}{Multiple-Testing Problem}
     まず t統計量のp値を計算.
     \begin{itemize}
-      \item 正規分布を仮定する。
-      \item 訓練データの全組み合わせを試し、以下で計算。
+      \item 正規分布を仮定する.
+      \item 訓練データの全組み合わせを試し, 以下で計算.
         \[
           p_j=\frac{1}{K}\sum_{k=1}{K}I(|t_j^k|>|t_j|)
         \]
-      \item 全組み合わせは膨大なので、ランダムサンプリング。
-      \item 遺伝子は似ているので、他の遺伝子の計算も利用。
+      \item 全組み合わせは膨大なので, ランダムサンプリング.
+      \item 遺伝子は似ているので, 他の遺伝子の計算も利用.
         \[
           p_j=\frac{1}{MK}\sum_{j'=1}^M\sum_{k=1}{K}I(|t_{j'}^k|>|t_j|)
         \]
     \end{itemize}
-    続いて、以下の帰無仮説と対立仮説。
+    続いて, 以下の帰無仮説と対立仮説.
     \begin{description}
-      \item[$H_{0j}$] 遺伝子$j$は radiation sensitivity に関係ない。
-      \item[$H_{1j}$] 遺伝子$j$は radiation sensitivity に関係ある。
+      \item[$H_{0j}$] 遺伝子$j$は radiation sensitivity に関係ない.
+      \item[$H_{1j}$] 遺伝子$j$は radiation sensitivity に関係ある.
     \end{description}
-    $p_j<\alpha$ならば、$H_{oj}$を reject としたいが、こうすると false reject が起こる確率(FWER)は$\alpha$よりずっと大きくなる。
+    $p_j<\alpha$ならば, $H_{oj}$を reject としたいが, こうすると false reject が起こる確率(FWER)は$\alpha$よりずっと大きくなる.
     \[
       (1-(1-\alpha)^M)
     \]
   \end{frame}
   \begin{frame}{Multiple-Testing Problem}
-    簡単な回避策を一つ紹介。
+    簡単な回避策を一つ紹介.
 
     \vspace{\baselineskip}
 
     Bonferroni の方法\\
-    $p_j<\alpha/M$ならば reject とすれば、FWER は$\alpha$以下になる。\\
-    →$M$が大きいと、too conservative.
+    $p_j<\alpha/M$ならば reject とすれば, FWER は$\alpha$以下になる. \\
+    →$M$が大きいと, too conservative.
 
     \vspace{\baselineskip}
 
-    FWER を抑える他の方法も提案されているらしい。
+    FWER を抑える他の方法も提案されているらしい.
+  \end{frame}
+  \begin{frame}{Multiple-Testing Problem - BH Method}
+    FWER を抑える以外の回避方法. ``False Discovery Rate''に注目する.
+    \begin{columns}[T]
+      \begin{column}{0.1\columnwidth}
+
+      \end{column}
+      \begin{column}{0.3\columnwidth}
+        \[
+          \mathrm{FDR} = \mathrm{E}\left(\frac{V}{R}\right)=\frac{\mbox{false-positive}}{\mbox{positive}}
+        \]
+      \end{column}
+      \begin{column}{0.6\columnwidth}
+        \begin{figure}[htb]
+          \centering
+          \includegraphics[width=5cm]{./images/confusion-matrix.png}
+        \end{figure}
+      \end{column}
+    \end{columns}
+    FDR を閾値 $\alpha$で抑える.
+    \begin{figure}[htb]
+      \centering
+      \includegraphics[width=5cm]{./images/bh-method.png}
+    \end{figure}
+    上記のアルゴリズムで以下を満たす結果が得られる.
+    \[
+      \mathrm{FDR}\le\frac{M_0}{M}\alpha\le\alpha
+    \]
+    (直感的には分からない. proof は quite complicated だそうです. )
+  \end{frame}
+  \begin{frame}{Multiple-Testing Problem - Plug-in Approach}
+    BH-Method で$\alpha=1$ でやってみた. \\
+    →$j=11$が閾値になった. \\
+    →$|t_j|\ge 4.101$に対応する. \\
+    →置換1000個のランダムサンプリングで得られるt統計量のうち, $4.101$以上なのは$1518$個. 
+    1置換あたり$1.518$この計算. \\
+    →$j=11$と合わせて, FDR を推定できる. 
+    \[
+      \hat{\mathrm{FDR}}=\frac{1.518}{11}\approx 0.14
+    \]
+    →適当な計算だけど, $\alpha=0.15$と近くていい感じ. \\
+    →先にt統計量の閾値を決めてしまえば, 簡単な方法になりそう. 
+    \begin{figure}
+      \centering
+      \includegraphics[width=5cm]{./images/plug-in-fdr.png}
+    \end{figure}
+  \end{frame}
+  \begin{frame}{Asymmetric Cutpoints と SAM}
+    さっきまではt統計量の閾値を絶対値で指定してたけど, そうじゃない時もある. \\
+    → Significance Analysis of Microarray(SAM) で対応.
+    \begin{columns}
+      \begin{column}{0.5\columnwidth}
+        \begin{itemize}
+          \item 横軸は, 各遺伝子のt統計量の置換における平均. 
+          \item 縦軸は, 今回のデータにおけるt統計量. 
+          \item 各点が遺伝子に対応.
+          \item 幅$\Delta$の決定境界.
+          \item 原点から左右にいき, 最初に境界を外れる所より遠くが significant.
+          \item この結果から, 対応する FDR を推定可能. 
+          \item 適切な FDR を返す$\Delta$を選ぶ.
+          \item 尤度比検定の非対称化バージョンと関係があるとか.
+        \end{itemize}
+      \end{column}
+      \begin{column}{0.5\columnwidth}
+        \begin{figure}[htb]
+          \centering
+          \includegraphics[width=5cm]{./images/sam-plot-t.png}
+        \end{figure}
+      \end{column}
+    \end{columns}
   \end{frame}
 \end{document}
