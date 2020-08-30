@@ -172,13 +172,13 @@
     そのためには, ``類似度''を定める必要があり, これがクラスター分析の肝でもある.
   \end{frame}
   \begin{frame}{クラスター分析 - (非)類似度}
-    $N$件のデータに対して, $N \times N$行列$\mathbf{D}$で, $\mathbf{D}_{ij}$が
+    $N$件のデータに対して, $N \times N$行列$\textbf{D}$で, $\textbf{D}_{ij}$が
     訓練データ$x_i$と$x_j$の(非)類似度になっている行列を入力とする分析手法が多いらしい.
     (この行列は対称行列になる. )
 
     で, $X_i$と$X_j$の非類似度として, 各次元の非類似度の和を使ったりする.
     \[
-      \mathbf{D}_{ij}=\sum_{k=1}^pd_k(x_ik, x_jk)
+      \textbf{D}_{ij}=\sum_{k=1}^pd_k(x_ik, x_jk)
     \]
     例えば, 差の二乗和でユークリッド距離とか.
 
@@ -482,11 +482,11 @@
           \includegraphics[width=4cm,clip]{images/pca.png}
         \end{figure}
       \item 直線は, 射影後のデータの分散が最大になるものを探す.
-      \item 数式で書くと, 直交$p\times q$行列$\mathbf{V}_q$で,
+      \item 数式で書くと, 直交$p\times q$行列$\textbf{V}_q$で,
         \[
-          \sum_{i=1}^N|(x_i-\bar{x})-\mathbf{V}_q\mathbf{V}_q^T(x_i-\bar{x})|^2
+          \sum_{i=1}^N|(x_i-\bar{x})-\textbf{V}_q\textbf{V}_q^T(x_i-\bar{x})|^2
         \]
-        を最小化するものを用いて, $X \to \mathbf{V}_q\mathbf{V}_q^TX$という変換で表せる.
+        を最小化するものを用いて, $X \to \textbf{V}_q\textbf{V}_q^TX$という変換で表せる.
       \item 行列の対角化や特異値分解で解ける. 深入りすると線形代数の沼. 時間が余ったら.
       \item 残差に対して主成分分析をすると, 第2主成分, 第3主成分, $\dots$と求まっていく.
       \item 参考\\
@@ -576,14 +576,14 @@
           \end{cases}
         \]
         としてもよい.
-      \item グラフの重みに関しても, $N$次正方行列$\mathbf{W}=\{w_{ii'}\}$が作れる. 隣接行列.
-      \item 隣接行列から次数行列$\mathbf{G}$を作れる.
+      \item グラフの重みに関しても, $N$次正方行列$\textbf{W}=\{w_{ii'}\}$が作れる. 隣接行列.
+      \item 隣接行列から次数行列$\textbf{G}$を作れる.
         \[
-          \mathbf{G}=\mathrm{diag}\left(g_i=\sum_{j=1}^Nw_{ij}\right)
+          \textbf{G}=\mathrm{diag}\left(g_i=\sum_{j=1}^Nw_{ij}\right)
         \]
-    \item さらに, unnormalized graph laplacian$\mathbf{L}$を
+    \item さらに, unnormalized graph laplacian$\textbf{L}$を
       \[
-        \mathbf{L}=\mathbf{G}-\mathbf{W}
+        \textbf{L}=\textbf{G}-\textbf{W}
       \]
       で定める.
 
@@ -591,21 +591,21 @@
   \end{frame}
   \begin{frame}{スペクトルクラスタリング}
     \begin{itemize}
-      \item $\mathbf{L}$を対角化し, 固有値の小さい方から$m$個に対応する固有ベクトルを並べて,
-        $N\times m$行列$\mathbf{Z}$を作る.
-      \item $\mathbf{Z}$の行ベクトルを, K平均法などでクラスタリングする.
+      \item $\textbf{L}$を対角化し, 固有値の小さい方から$m$個に対応する固有ベクトルを並べて,
+        $N\times m$行列$\textbf{Z}$を作る.
+      \item $\textbf{Z}$の行ベクトルを, K平均法などでクラスタリングする.
     \end{itemize}
     以上が, スペクトルクラスタリングの流れ. なんでうまくいくのか意味不明だと思うので, 以下, 数学的な背景の説明.
     \begin{itemize}
-      \item まず, 任意のベクトル$\mathbf{f}$について,
+      \item まず, 任意のベクトル$\textbf{f}$について,
         \begin{eqnarray*}
-          \mathbf{f}^T\mathbf{L}\mathbf{f}&=\sum_{i=1}^Ng_if_i^2-\sum_{i=1}^N\sum_{i'=1}^Nf_if_{i'}w_{ii'}\\
+          \textbf{f}^T\textbf{L}\textbf{f}&=\sum_{i=1}^Ng_if_i^2-\sum_{i=1}^N\sum_{i'=1}^Nf_if_{i'}w_{ii'}\\
           &=\frac{1}{2}\sum_{i'=1}^Nf_if_{i'}w_{ii'}(f_i-f_{i'})^2
         \end{eqnarray*}
         が成り立つ.
       \item この値が小さくなるのは, ``$w_{ii'}$が大きいならば, $f_i$と$f_{i'}$の値が近い''時である.
-      \item さらに言うと, $1^T\mathbf{L}1=0$であるので, 定数ベクトルは固有値$0$に対応する固有ベクトル.
-        グラフが完全にクラスターで分離していれば, $\mathbf{L}$はブロック対角行列になるので,
+      \item さらに言うと, $1^T\textbf{L}1=0$であるので, 定数ベクトルは固有値$0$に対応する固有ベクトル.
+        グラフが完全にクラスターで分離していれば, $\textbf{L}$はブロック対角行列になるので,
         クラスター$G$に対して, ベクトル$I_G$も固有値0に対応する固有ベクトルとなる.
     \end{itemize}
 
@@ -616,13 +616,13 @@
     普通の主成分の非線形化バージョン.
 
     普通の主成分は, 分散行列の対角化として得られる.
-    数式で書くと, $\mathbf{X}$のグラム行列
+    数式で書くと, $\textbf{X}$のグラム行列
     \[
-      \mathbf{K}=\mathbf{X}\mathbf{X}^T
+      \textbf{K}=\textbf{X}\textbf{X}^T
     \]
     の二重中心化行列の対角化
     \[
-      \tilde{\mathbf{K}}=(\mathbf{I}-\mathbf{M})\mathbf{K}(\mathbf{I}-\mathbf{M})=\mathbf{U}\mathbf{D}^2\mathbf{U}^T
+      \tilde{\textbf{K}}=(\textbf{I}-\textbf{M})\textbf{K}(\textbf{I}-\textbf{M})=\textbf{U}\textbf{D}^2\textbf{U}^T
     \]
     を考えることである. 詳細は18章にて.
 
@@ -642,7 +642,7 @@
     \begin{itemize}
       \item 分散を最大化する.
         \[
-          \mathrm{maximize} \quad v^T(\mathbf{X}^T\mathbf{X})v \quad \mathrm(subject to) \quad \sum_{j=1}^p|v_j| \le t, v^Tv=1
+          \mathrm{maximize} \quad v^T(\textbf{X}^T\textbf{X})v \quad \mathrm(subject to) \quad \sum_{j=1}^p|v_j| \le t, v^Tv=1
         \]
       \item 正規化項を加えた損失を最小化する.
         \[
@@ -668,9 +668,9 @@
     \end{figure}
   \end{frame}
   \begin{frame}{非負行列因子分解の計算}
-    前頁の$\mathbf{W}$, $\mathbf{H}$は以下の最大化で求める.
+    前頁の$\textbf{W}$, $\textbf{H}$は以下の最大化で求める.
     \[
-      L(\mathbf{W}, \mathbf{H})=\sum_{i=1}^N\sum_{j=1}^p\left(x_{ij}\log(\mathbf{WH})_{ij}-(\mathbf{WH})_{ij}\right)
+      L(\textbf{W}, \textbf{H})=\sum_{i=1}^N\sum_{j=1}^p\left(x_{ij}\log(\textbf{WH})_{ij}-(\textbf{WH})_{ij}\right)
     \]
     これは, 各変数$X_i$がPoisson分布としたときの対数尤度.
     非負データに対して, Poisson分布を仮定するのは妥当とのこと.
@@ -705,12 +705,12 @@
   \end{frame}
   \begin{frame}{原型分析の計算}
     \[
-      \mathbf{H}=\mathbf{BX}
+      \textbf{H}=\textbf{BX}
     \]
-    を満たす行列$\mathbf{B}$で, $\sum_k{b_{ik}}=1$を満たすものが取れる.
+    を満たす行列$\textbf{B}$で, $\sum_k{b_{ik}}=1$を満たすものが取れる.
     これらを使って, 以下を最小化する.
     \[
-      J(\mathbf{W},\mathbf{B})=|\mathbf{X}-\mathbf{WH}|^2=|\mathbf{X}-\mathbf{WBX}|^2
+      J(\textbf{W},\textbf{B})=|\textbf{X}-\textbf{WH}|^2=|\textbf{X}-\textbf{WBX}|^2
     \]
     計算は, 今まで見たいに, 交互に代入していけば, 最適解を求められる. (alternating fashion)
     \begin{itemize}
@@ -724,12 +724,12 @@
       \item 非負行列因子分解
 
         各変数の分布をより少ない変数で表したい. \\
-        →$\mathbf{X}$の各列をうまく近似しようとする.
+        →$\textbf{X}$の各列をうまく近似しようとする.
 
       \item 原型分析
 
         各データをより少ない次元でうまく表現したい. \\
-        →$\mathbf{X}$の各行をうまく近似しようとする.
+        →$\textbf{X}$の各行をうまく近似しようとする.
     \end{itemize}
   \end{frame}
   \section{独立成分分析と探索的射影追跡\\p.557-}
@@ -753,8 +753,8 @@
 
     問題点がある.
 
-    任意の直交行列$\mathbf{R}$について,
-    $X=\mathbf{A}S=\mathbf{A}\mathbf{R}^T\mathbf{R}S=\mathbf{A}^*S^*$
+    任意の直交行列$\textbf{R}$について,
+    $X=\textbf{A}S=\textbf{A}\textbf{R}^T\textbf{R}S=\textbf{A}^*S^*$
     となるので, 潜在変数や係数行列の取り方は一意でない. (というか無限個ある. )\\
     →結局, どんな基底を取るか恣意的に決められてしまうので, 批判されている.
 
@@ -763,7 +763,7 @@
   \begin{frame}{独立成分分析}
     因子分析と式の形は完全に一緒.
     \[
-      X=\mathbf{A}S
+      X=\textbf{A}S
     \]
 
     $S$の各変数が無相関なだけでなく, 統計的に独立であることを要求することで, 回転による恣意性を克服している. \\
@@ -795,10 +795,10 @@
   \begin{frame}{独立成分分析の計算}
     相互情報量が, いい感じに独立度を定式化できているので, 採用.
 
-    $Y$が$X$の回転と思う. すなわち, $Y=\mathbf{A}^TX$.
+    $Y$が$X$の回転と思う. すなわち, $Y=\textbf{A}^TX$.
     すると,
     \[
-      I(Y)=\sum_{j=1}^pH(Y_j)-H(\mathbf{A}^TX)=\sum_{j=1}^pH(Y_j)-H(X)
+      I(Y)=\sum_{j=1}^pH(Y_j)-H(\textbf{A}^TX)=\sum_{j=1}^pH(Y_j)-H(X)
     \]
     となる.
 
