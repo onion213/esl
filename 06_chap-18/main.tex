@@ -444,17 +444,17 @@
             →高次元でも計算が楽なものはないのか...
           \item 数学の話. 再生核ヒルベルト空間(RKHS)という数学的対象とカーネル関数というある条件を満たす関数が1対1対応する.
             \begin{itemize}
-              \item 再生核ヒルベルト空間は, 高次元に写す先の空間に相当. 
-              \item カーネル関数は, 高次元空間における内積を直接計算する関数に相当. 
+              \item 再生核ヒルベルト空間は, 高次元に写す先の空間に相当.
+              \item カーネル関数は, 高次元空間における内積を直接計算する関数に相当.
             \end{itemize}
           \item RKHSは内積計算が楽!内積で計算できるモデルならいい感じに使える!\\
             (SVM, CPA, etc...先述のものたちとか)
-          \item 例えば, 以下を考える. 
+          \item 例えば, 以下を考える.
             \[
               \Phi\colon \mathbb{R}^2\to\mathbb{R}^3, \Phi(x_1,x_2)=(x_1^2,x_2^2,\sqrt{2}x_1x_2)
             \]
             対応するRHKSは$\mathbb{R}^3$.
-            カーネル関数は, 
+            カーネル関数は,
             \begin{eqnarray*}
               K(x,y)&=&\langle(x_1^2,x_2^2,\sqrt{2}x_1x_2),(y_1^2,y_2^2,\sqrt{2}y_1y_2)\rangle\\
               &=&x_1^2y_1^2+x_2^2y_2^2+2x_1x_2y_1y_2\\
@@ -466,7 +466,7 @@
   \end{frame}
   \section{Supervised Principal Component\\p. 674-}
   \begin{frame}{Supervised Principal Component}
-    目的変数をよく説明できて, 分散が大きいような線形結合成分を取りたい. 
+    目的変数をよく説明できて, 分散が大きいような線形結合成分を取りたい.
     \begin{figure}[htb]
       \centering
       \includegraphics[width=8cm]{./images/supervised-pca.png}
@@ -479,13 +479,42 @@
     \end{description}
   \end{frame}
   \begin{frame}{Supervised PCA と Partial Least Squares}
-    3.5.2 で見た Partial Least Squares も, 説明力のある主成分を見つけようとする手法. 
+    3.5.2 で見た Partial Least Squares も, 説明力のある主成分を見つけようとする手法.
     \begin{figure}[htb]
       \centering
       \includegraphics[width=8cm]{./images/pls.png}
     \end{figure}
     (アルゴリズム見てもイメージ湧かないかも)
 
-    両者の違いは, SPCA は要らない特徴量を切り捨てるが, PLS は downweight するだけという点. 
+    両者の違いは, SPCA は要らない特徴量を切り捨てるが, PLS は downweight するだけという点.
+  \end{frame}
+  \begin{frame}{Pre-Conditioning for Feature Selection}
+    SPCA の問題.
+    \begin{itemize}
+      \item 必ずしも sparce なモデルにならない.
+      \item 選ばれなかった特徴量の中に主成分と相関の強いものがあるかも.
+      \item 相関の強い特徴量たちがみんな選ばれる. (冗長な変数選択)
+    \end{itemize}
+    → lasso で1個目は解決できるが, 単なる lasso では性能が低い. \\
+    → predictioned lasso
+  \end{frame}
+  \begin{frame}{Predictioned Lasso}
+    \begin{enumerate}
+      \item 通常の SPCA で出力変数$Y$の推定値$\hat{Y}$を計算する.
+      \item $X$を入力変数, $\hat{Y}$を出力変数として lasso 回帰する.
+    \end{enumerate}
+    アルゴリズムの各ステップの意図は以下。
+    \begin{description}
+      \item[Step. 1] Denoising the Outcome. \\出力変数の生データに含まれるノイズをなくす。
+      \item[Step. 2] Lasso で sparce な回帰をする。
+    \end{description}
+
+    \vspace{\baselineskip}
+
+    パフォーマンス良い。
+    \begin{figure}[htb]
+      \centering
+      \includegraphics[width=7cm]{./images/plasso-performance.png}
+    \end{figure}
   \end{frame}
 \end{document}
