@@ -1,14 +1,15 @@
 \documentclass[dvipdfmx,8pt]{beamer}
 
-\usepackage[T1]{fontenc}
-\usepackage[ansinew]{inputenc}
+% \usepackage[T1]{fontenc}
+% \usepackage[ansinew]{inputenc}
+% \usepackage{mathrsfs} % 花文字
 
 \usepackage{bxdpx-beamer} % dvipdfmxなので必要
 \usepackage{pxjahyper} % 日本語のしおり用
 % \usepackage{minijs} % フォントの設定?pLaTeX, upLaTaXなら不要
 
 \usepackage{url} % 文中にリンク張る用
-\usepackage{comment} % 複数行コメントアウト用
+% \usepackage{comment} % 複数行コメントアウト用
 \usepackage{amsmath} %数式用
 \renewcommand{\kanjifamilydefault}{\gtdefault} % 既定をゴシック体に変更
 
@@ -606,14 +607,14 @@
     BH-Method で$\alpha=1$ でやってみた. \\
     →$j=11$が閾値になった. \\
     →$|t_j|\ge 4.101$に対応する. \\
-    →置換1000個のランダムサンプリングで得られるt統計量のうち, $4.101$以上なのは$1518$個. 
+    →置換1000個のランダムサンプリングで得られるt統計量のうち, $4.101$以上なのは$1518$個.
     1置換あたり$1.518$この計算. \\
-    →$j=11$と合わせて, FDR を推定できる. 
+    →$j=11$と合わせて, FDR を推定できる.
     \[
       \hat{\mathrm{FDR}}=\frac{1.518}{11}\approx 0.14
     \]
     →適当な計算だけど, $\alpha=0.15$と近くていい感じ. \\
-    →先にt統計量の閾値を決めてしまえば, 簡単な方法になりそう. 
+    →先にt統計量の閾値を決めてしまえば, 簡単な方法になりそう.
     \begin{figure}
       \centering
       \includegraphics[width=5cm]{./images/plug-in-fdr.png}
@@ -625,12 +626,12 @@
     \begin{columns}
       \begin{column}{0.5\columnwidth}
         \begin{itemize}
-          \item 横軸は, 各遺伝子のt統計量の置換における平均. 
-          \item 縦軸は, 今回のデータにおけるt統計量. 
+          \item 横軸は, 各遺伝子のt統計量の置換における平均.
+          \item 縦軸は, 今回のデータにおけるt統計量.
           \item 各点が遺伝子に対応.
           \item 幅$\Delta$の決定境界.
           \item 原点から左右にいき, 最初に境界を外れる所より遠くが significant.
-          \item この結果から, 対応する FDR を推定可能. 
+          \item この結果から, 対応する FDR を推定可能.
           \item 適切な FDR を返す$\Delta$を選ぶ.
           \item 尤度比検定の非対称化バージョンと関係があるとか.
         \end{itemize}
@@ -642,5 +643,58 @@
         \end{figure}
       \end{column}
     \end{columns}
+  \end{frame}
+  \begin{frame}{FDR についてベイズ的な視点から}
+    ベイズ的な視点から再解釈,
+    \begin{itemize}
+      \item positive FDR. $R=0$の事象に興味はない, きれいに定式化するために,
+        \[
+          \mathrm{pFDR}=\mathrm{E}\left(\frac{V}{R}\mid R>0\right)
+        \]
+      \item rejection region $\Gamma$.
+      \item 変数$Z_j$.
+        \[
+          Z_j=
+          \begin{cases}
+            0 \quad \mbox{帰無仮説が真}\\
+            1 \quad \mbox{otherwise}
+          \end{cases}
+        \]
+      \item $(t_j,Z_j)$が適当な分布$F_0,F_1$を使って以下のように表せると思う,
+        \[
+          t_j\mid Z_j\sim (1-Z_j)F_0+Z_jF_1
+        \]
+      \item $t_j$の周辺分布は以下,
+        \[
+          t_j\sim \pi_0F_0+(1-\pi_0)F_1,\quad \pi_0=\probability{Z_j=0}
+        \]
+      \item 棄却域$\Gamma$に対して, pFDRは以下,
+        \[
+          \mathrm{pFDR}(\Gamma)=\probability{Z_j=0\mid t_j\in\Gamma}
+        \]
+      \item pFDR はある種の事後確率と思える,
+    \end{itemize}
+  \end{frame}
+  \begin{frame}{Local FDR}
+    t統計量について。\\
+    棄却域$\Gamma=\{(-\infty,-2)\cup(2,\infty)\}$とすると、$t_j=2$,$t_{j'}=5$となるデータはどちらも significant 判定。でも、きっと$j'$の方が　significant.\\
+    \begin{itemize}
+      \item q値.
+        \[
+          \mathrm{q-value}(t_0)=\mathrm{FDR}(\{(-\infty,-t_0)\cup(t_0,\infty)\})=\probability{Z_j=0\mid |t_j|>t_0}
+        \]
+      \item local FDR.
+        \[
+          \mathrm{lFDR}(t_0)=\mathrm{FDR}(\{t_0\})=\probability{Z_j=0\mid t_j=t_0}
+        \]
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \centering
+    $\mathcal{FIN}$
+  \end{frame}
+  \begin{frame}
+    \centering
+    今後についてお話ししましょう。
   \end{frame}
 \end{document}
