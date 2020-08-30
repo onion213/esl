@@ -2,7 +2,7 @@
 \usepackage{bxdpx-beamer}
 \usepackage{pxjahyper}
 \renewcommand{\kanjifamilydefault}{\gtdefault}
-\usetheme{metropolis}
+% \usetheme{metropolis}
 \title{The Elements of Statistical Learning\\Chap.10: Boosting and Additive Tree}
 \date{\today}
 \author{Kosuke Kito}
@@ -347,18 +347,18 @@
     関数の最小値を発見する手法. これを応用して木の最適化を考えていく.
     \begin{itemize}
       \item 最も傾斜が急な方向に最も小さくなる位置まで移動する, という処理を繰り返して最小点を探す手法. 貪欲法.
-      \item 関数$f(x_1,\dots,x_n)$の最小化を考えるとすると, $\mathbf{x}^{(0)}$を適当にとって, $m=1,2,\dots$に対して, 収束するまで以下を繰り返す.
+      \item 関数$f(x_1,\dots,x_n)$の最小化を考えるとすると, $\textbf{x}^{(0)}$を適当にとって, $m=1,2,\dots$に対して, 収束するまで以下を繰り返す.
       \begin{enumerate}
         \item 方向を決める. 勾配ベクトルの逆方向なので勾配(gradient)を計算すればよい.         \[
-          g_m=\mathrm{grad}f(\mathbf{x}_i)=\frac{\partial f}{\partial x_i}(\mathbf{x}^{(m)})
+          g_m=\mathrm{grad}f(\textbf{x}_i)=\frac{\partial f}{\partial x_i}(\textbf{x}^{(m)})
         \]
         \item 距離を決める.
         \[
-          \rho_m=\mathrm{arg}\min_{\rho}f(\mathbf{x}^{(m)}-\rho g_m)
+          \rho_m=\mathrm{arg}\min_{\rho}f(\textbf{x}^{(m)}-\rho g_m)
         \]
         \item 値を更新する.
         \[
-          \mathbf{x}^{(m+1)}=\mathbf{x}^{(m)}-\rho g_m
+          \textbf{x}^{(m+1)}=\textbf{x}^{(m)}-\rho g_m
         \]
       \end{enumerate}
     \end{itemize}
@@ -368,9 +368,9 @@
     \[
       L(f)=\sum_{i=1}^{N}L(y_i,f(x_i))
     \]
-    の最小化なので, この値を$\mathbf{f}={f(x_i)}_{i=1}^{N}$の関数とみなして, 最急降下法を使いたい. が, そのまま適用はできない. 問題点は以下.
+    の最小化なので, この値を$\textbf{f}={f(x_i)}_{i=1}^{N}$の関数とみなして, 最急降下法を使いたい. が, そのまま適用はできない. 問題点は以下.
     \begin{itemize}
-      \item 最急降下法では入力値$\mathbf{x}$に制約はないが, 上記のように定めた$\mathbf{f}$は高々$J_m$種類の値しか含まない.
+      \item 最急降下法では入力値$\textbf{x}$に制約はないが, 上記のように定めた$\textbf{f}$は高々$J_m$種類の値しか含まない.
       \item 最急降下法では, 向きを完全に決めてから距離を決めるが, 木の最適化では, 領域の分割を決めてから各領域ごとに独立に高さを計算する.
       \item 勾配は訓練データに対する値しか考慮していないので, 過学習を防げない.
     \end{itemize}
